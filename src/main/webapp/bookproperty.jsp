@@ -80,7 +80,7 @@ body {
             <input type="date" name="booking_date" class="form-control" min="<%= today %>" required>
           </div>
 
-          <button type="submit" class="btn btn-success w-100 py-2 fw-bold">Confirm Booking</button>
+          <button type="submit" class="btn btn-success w-100 py-2 fw-bold">Book Now</button>
           <a href="viewproperties" class="btn btn-outline-secondary w-100 mt-2">Cancel</a>
         </form>
       </div>
