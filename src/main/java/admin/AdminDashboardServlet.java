@@ -27,21 +27,23 @@ public class AdminDashboardServlet extends HttpServlet {
             return;
         }
 
-        List<Map<String, String>> bookings = new ArrayList<>();
+        List<Map<String, String>> bookings   = new ArrayList<>();
+        List<Map<String, String>> properties = new ArrayList<>();
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
 
-            String sql = "SELECT b.id, b.booking_date, b.status, " +
-                         "p.title, p.city, p.price, " +
-                         "u.fullname AS buyer_name, u.email AS buyer_email " +
-                         "FROM bookings b " +
-                         "JOIN properties p ON b.property_id = p.id " +
-                         "JOIN users u ON b.user_id = u.id " +
-                         "ORDER BY b.id DESC";
+            // --- fetch all bookings ---
+            String bookingSql = "SELECT b.id, b.booking_date, b.status, " +
+                                "p.title, p.city, p.price, " +
+                                "u.fullname AS buyer_name, u.email AS buyer_email " +
+                                "FROM bookings b " +
+                                "JOIN properties p ON b.property_id = p.id " +
+                                "JOIN users u ON b.user_id = u.id " +
+                                "ORDER BY b.id DESC";
 
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = conn.prepareStatement(bookingSql);
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
@@ -59,6 +61,25 @@ public class AdminDashboardServlet extends HttpServlet {
 
             rs.close();
             pst.close();
+
+            // --- fetch all properties ---
+            PreparedStatement pst2 = conn.prepareStatement(
+                "SELECT id, title, city, price, featured FROM properties ORDER BY id DESC"
+            );
+            ResultSet rs2 = pst2.executeQuery();
+
+            while (rs2.next()) {
+                Map<String, String> prop = new HashMap<>();
+                prop.put("id",       rs2.getString("id"));
+                prop.put("title",    rs2.getString("title"));
+                prop.put("city",     rs2.getString("city"));
+                prop.put("price",    rs2.getString("price"));
+                prop.put("featured", rs2.getString("featured"));
+                properties.add(prop);
+            }
+
+            rs2.close();
+            pst2.close();
             conn.close();
 
         } catch (Exception e) {
@@ -66,6 +87,7 @@ public class AdminDashboardServlet extends HttpServlet {
         }
 
         request.setAttribute("bookings", bookings);
+        request.setAttribute("properties", properties);
         request.getRequestDispatcher("admin-dashboard.jsp").forward(request, response);
     }
 }

@@ -145,7 +145,71 @@ body {
       </div>
     </form>
   </div>
-    </form>
+
+  <!-- MANAGE PROPERTIES -->
+  <div class="section-card">
+    <h4 class="mb-4">&#9999; Manage Properties</h4>
+    <%
+      List<Map<String, String>> properties =
+          (List<Map<String, String>>) request.getAttribute("properties");
+
+      if (properties != null && !properties.isEmpty()) {
+    %>
+    <div class="table-responsive">
+      <table class="table table-dark table-bordered align-middle">
+        <thead class="table-secondary text-dark">
+          <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>City</th>
+            <th>Current Price (&#8377;)</th>
+            <th>Update Price &amp; Featured</th>
+          </tr>
+        </thead>
+        <tbody>
+        <%
+          for (Map<String, String> prop : properties) {
+            boolean isFeatured = "1".equals(prop.get("featured"));
+        %>
+          <tr>
+            <td><%= prop.get("id") %></td>
+            <td><%= prop.get("title") %></td>
+            <td><%= prop.get("city") %></td>
+            <td>
+              &#8377;<%= prop.get("price") %>
+              <% if (isFeatured) { %>
+              <span class="badge bg-warning text-dark ms-2">&#11088; Featured</span>
+              <% } %>
+            </td>
+            <td>
+              <form action="editproperty" method="post" class="d-flex align-items-center gap-2 flex-wrap">
+                <input type="hidden" name="property_id" value="<%= prop.get("id") %>">
+                <input type="number" name="price" step="0.01" min="0"
+                       value="<%= prop.get("price") %>"
+                       class="prop-input" style="width:130px;" required>
+                <div class="form-check form-check-inline mb-0">
+                  <input type="checkbox" class="form-check-input" name="featured" value="1"
+                         id="feat_<%= prop.get("id") %>"
+                         <%= isFeatured ? "checked" : "" %>>
+                  <label class="form-check-label text-light" for="feat_<%= prop.get("id") %>">&#11088; Featured</label>
+                </div>
+                <button type="submit" class="btn btn-warning btn-sm">Save</button>
+              </form>
+            </td>
+          </tr>
+        <%
+          }
+        %>
+        </tbody>
+      </table>
+    </div>
+    <%
+      } else {
+    %>
+    <p class="text-muted">No properties yet.</p>
+    <%
+      }
+    %>
   </div>
 
   <!-- ALL BOOKINGS -->
