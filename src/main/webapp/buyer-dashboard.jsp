@@ -27,6 +27,13 @@ body {
   border-radius: 15px;
 }
 
+.featured-card {
+  background: rgba(255, 215, 0, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 215, 0, 0.4);
+}
+
 .property-img {
   height: 200px;
   object-fit: cover;
@@ -48,6 +55,40 @@ body {
 </nav>
 
 <div class="container mt-4">
+
+<%
+List<Map<String, String>> featuredProperties =
+    (List<Map<String, String>>) request.getAttribute("featuredProperties");
+
+if (featuredProperties != null && !featuredProperties.isEmpty()) {
+%>
+
+<h2 class="mb-3">&#11088; Featured Properties</h2>
+<div class="row g-4 mb-5">
+<%
+  for (Map<String, String> fp : featuredProperties) {
+%>
+<div class="col-md-4">
+  <div class="card featured-card text-white">
+    <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2 px-2 py-1">&#11088; Featured</span>
+    <img src="<%= fp.get("image_url") %>" class="property-img card-img-top">
+    <div class="card-body">
+      <h5><%= fp.get("title") %></h5>
+      <p>
+        Location: <%= fp.get("city") %> <br>
+        Bedrooms: <%= fp.get("bedrooms") %> BHK <br>
+        Price: &#8377;<%= fp.get("price") %>
+      </p>
+      <a href="bookproperty?property_id=<%= fp.get("id") %>" class="btn btn-warning w-100 text-dark fw-bold">Book Now</a>
+    </div>
+  </div>
+</div>
+<%
+  }
+%>
+</div>
+
+<% } %>
 
 <h2>Available Properties</h2>
 
