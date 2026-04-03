@@ -70,6 +70,14 @@ nav a:hover {
 .property-card a.btn-book:hover {
   background: #219150;
 }
+
+.property-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
 </style>
 </head>
 
@@ -79,6 +87,7 @@ nav a:hover {
   <div><strong>RealEstate</strong></div>
   <div>
     <a href="viewproperties">Dashboard</a>
+    <a href="mybookings">My Bookings</a>
     <a href="login.html">Logout</a>
   </div>
 </nav>
@@ -96,11 +105,12 @@ nav a:hover {
   %>
 
   <div class="property-card">
+    <img src="<%= p.get("image_url") %>" alt="<%= p.get("title") %>" class="property-img">
     <h3><%= p.get("title") %></h3>
     <p>Location: <%= p.get("city") %></p>
     <p>BHK: <%= p.get("bedrooms") %> BHK</p>
     <p>Price: &#8377;<%= p.get("price") %></p>
-    <a href="bookproperty.jsp?property_id=<%= p.get("id") %>" class="btn-book">Book Now</a>
+    <a href="bookproperty?property_id=<%= p.get("id") %>" class="btn-book">Book Now</a>
   </div>
 
   <%
