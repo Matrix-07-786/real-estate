@@ -42,6 +42,7 @@ body {
   <div>
     <a href="mybookings" class="btn btn-outline-light btn-sm me-2">My Bookings</a>
     <a href="search.html" class="btn btn-outline-light btn-sm me-2">Search</a>
+    <a href="profile" class="btn btn-outline-light btn-sm me-2">Profile</a>
     <a href="login.html" class="btn btn-danger btn-sm">Logout</a>
   </div>
 </nav>
@@ -71,7 +72,7 @@ if (properties != null && !properties.isEmpty()) {
         Bedrooms: <%= p.get("bedrooms") %> BHK <br>
         Price: ₹<%= p.get("price") %>
       </p>
-      <a href="bookproperty.jsp?property_id=<%= p.get("id") %>" class="btn btn-primary w-100">Book Now</a>
+      <a href="bookproperty?property_id=<%= p.get("id") %>" class="btn btn-primary w-100">Book Now</a>
     </div>
   </div>
 </div>
